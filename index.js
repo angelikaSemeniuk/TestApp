@@ -2,6 +2,8 @@
 const url = 'https://content.guardianapis.com/search?api-key=64725228-5b31-4c1c-aba5-faa61edfb7be';
 const params = { method: 'get' };
 const errorElement = document.querySelector(".messageError");
+const button = document.querySelector("button");
+button.addEventListener("click", handleRefreshClick);
 
 loadNews();
 
@@ -38,4 +40,8 @@ function showItems(data) {
 function showMessageError (message) {
     errorElement.innerHTML = message;
     errorElement.style.display = "block";
+}
+
+function handleRefreshClick () {
+    loadNews();
 }
