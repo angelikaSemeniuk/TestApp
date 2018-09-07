@@ -48,6 +48,12 @@
     border: 1px solid black;
 }
 
+.pagination {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+
 
 
 

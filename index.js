@@ -5,7 +5,17 @@ const params = { method: 'get' };
 const button = document.querySelector("button");
 const errorElement = document.querySelector(".messageError");
 const listConrainer = document.querySelector(".list");
+const nextPageButton = document.querySelector(".nextPage");
+const previousPageButton = document.querySelector(".previousPage");
+const currentPage = document.querySelector(".currentPage");
+const numberOfPages = document.querySelector(".numberOfPages");
 
+nextPageButton.addEventListener("click", (event) => {
+    doNextPage(event, Number(currentPage.innerText));
+});
+previousPageButton.addEventListener("click", (event) => {
+    doPreviousPage(event, Number(currentPage.innerText));
+});
 button.addEventListener("click", handleRefreshClick);
 
 loadNews();
@@ -16,6 +26,7 @@ function loadNews () {
             return response.json();
         })
         .then((data) => {
+            doPagination(data);
             showItems(data);
         })
         .catch((error) => {
@@ -103,4 +114,41 @@ function showMessageError (message) {
 
 function handleRefreshClick () {
     loadNews();
+}
+
+function doPagination (data) {
+    currentPage.innerText = data.response.currentPage;
+    numberOfPages.innerText = " of " + data.response.total;
+}
+
+function doNextPage(event,currentPage) {
+    const page = currentPage + 1;
+    const url = "http://content.guardianapis.com/search?page=" + page + "&api-key=" + apiKey;
+    fetch(url, params)
+        .then((response) => {
+            return response.json();
+        })
+        .then((data) => {
+            doPagination(data);
+            showItems(data);
+        })
+        .catch((error) => {
+            console.error(error);
+        });
+}
+
+function doPreviousPage(event,currentPage) {
+    const page = currentPage - 1;
+    const url = "http://content.guardianapis.com/search?page=" + page + "&api-key=" + apiKey;
+    fetch(url, params)
+        .then((response) => {
+            return response.json();
+        })
+        .then((data) => {
+            doPagination(data);
+            showItems(data);
+        })
+        .catch((error) => {
+            console.error(error);
+        });
 }
